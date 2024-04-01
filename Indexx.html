@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo do Século</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .jogo {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        .quadrado {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #ccc;
+            font-size: 30px;
+            cursor: pointer;
+            background-color: rgb(160, 212, 221);
+        }
+
+        .quadrado:hover {
+            background-color: #cbdaf5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Jogo da Velha</h1>
+    <table class="jogo" border="2">
+        <tr>
+            <td class="quadrado" onclick="jogar(this)"></td>
+            <td class="quadrado" onclick="jogar(this)"></td>
+            <td class="quadrado" onclick="jogar(this)"></td>
+        </tr>
+
+        <tr>
+            <td class="quadrado" onclick="jogar(this)"></td>
+            <td class="quadrado" onclick="jogar(this)"></td>
+            <td class="quadrado" onclick="jogar(this)"></td>
+        </tr>
+
+        <tr>
+            <td class="quadrado" onclick="jogar(this)"></td>
+            <td class="quadrado" onclick="jogar(this)"></td>
+            <td class="quadrado" onclick="jogar(this)"></td>
+        </tr>
+
+    </table>
+</div>
+
+<script>
+    var jogador = "X";
+
+    var tabuleiro = [
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""]
+    ];
+
+    function jogar(celula) {
+        var linha = celula.parentElement.rowIndex;
+        var coluna = celula.cellIndex;
+
+        if (celula.innerHTML == "") {
+            celula.innerHTML = jogador;
+            tabuleiro[linha][coluna] = jogador;
+
+            if (verificarVencedor(jogador)) {
+                alert("O jogador " + jogador + " ganhou!");
+                reiniciar();
+            } else if (verificarEmpate()) {
+                alert("Empate!");
+                reiniciar();
+            } else {
+                jogador = (jogador === "X") ? "O" : "X"; // Alternar entre "X" e "O"
+            }
+        }
+    }
+
+    function verificarVencedor(jogador) {
+        // Verificar linhas
+        for (var i = 0; i < 3; i++) {
+            if (tabuleiro[i][0] == jogador && tabuleiro[i][1] == jogador && tabuleiro[i][2] == jogador) {
+                return true;
+            }
+        }
+
+        // Verificar colunas
+        for (var j = 0; j < 3; j++) {
+            if (tabuleiro[0][j] == jogador && tabuleiro[1][j] == jogador && tabuleiro[2][j] == jogador) {
+                return true;
+            }
+        }
+
+        // Verificar diagonal principal
+        if (tabuleiro[0][0] == jogador && tabuleiro[1][1] == jogador && tabuleiro[2][2] == jogador) {
+            return true;
+        }
+
+        // Verificar diagonal secundária
+        if (tabuleiro[0][2] == jogador && tabuleiro[1][1] == jogador && tabuleiro[2][0] == jogador) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function verificarEmpate() {
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+                if (tabuleiro[i][j] == "") {
+                    return false; // Ainda há células vazias, o jogo não está empatado
+                }
+            }
+        }
+        // Se todas as células estiverem preenchidas e não houver vencedor, então é um empate
+        return true;
+    }
+
+    function reiniciar() {
+        window.location.reload();
+    }
+</script>
+
+</body>
+</html>
